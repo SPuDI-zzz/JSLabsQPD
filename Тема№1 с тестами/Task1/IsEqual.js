@@ -26,46 +26,30 @@ function isDeepEqual(value, other) {
             return +value === +other;
         case 'String':
         case 'RegExp':
-        case 'Function':
             return value.toString() === other.toString();
+        case 'Function':
+            return false;
         case 'Set':
-            return MyIsEqual(setToArray(value), setToArray(other));
         case 'Map':
-            return MyIsEqual(mapToArray(value), mapToArray(other));
+            value = Array.from(value);
+            other = Array.from(other);
+            break;
     }
 
-    const keys1 = Object.keys(value);
-    const keys2 = Object.keys(other);
+    const keysValue = Object.keys(value);
+    const keysOther = Object.keys(other);
  
-    if (keys1.length != keys2.length) {
+    if (keysValue.length !== keysOther.length) {
         return false;
     }
  
-    for (let key of keys1) {
-        if (!keys2.includes(key) || !MyIsEqual(value[key], other[key])) {
+    for (let key of keysValue) {
+        if (!keysOther.includes(key) || !MyIsEqual(value[key], other[key])) {
             return false;
         }
     }
  
     return true;
-}
-
-function setToArray(set) {
-    let index = -1;
-    const result = Array(set.size);
-
-    set.forEach(value => result[++index] = value);
-
-    return result;
-}
-
-function mapToArray(map) {
-    let index = -1;
-    const result = Array(map.size);
-
-    map.forEach((value, key) => result[++index] = [key, value]);
-
-    return result;
 }
 
 function getType(input) {

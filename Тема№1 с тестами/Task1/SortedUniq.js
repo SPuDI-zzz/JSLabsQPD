@@ -6,9 +6,13 @@ function MySortedUniq(array) {
         const currentElement = array[index];
         const previousElement = array[index - 1];
 
-        if (!MyIsEqual(previousElement, currentElement))
+        if (!equal(previousElement, currentElement))
             resultArray.push(currentElement);
     }
 
     return resultArray;
 }
+
+function equal(value, other) {
+    return value === other || (value !== value && other !== other);
+  }

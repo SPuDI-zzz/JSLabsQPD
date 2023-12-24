@@ -1,6 +1,7 @@
-function MyDifference(arrA, arrB) {      
-    const resultArray = arrA.filter(elementOfBiggerArr => 
-        !arrB.some(element => MyIsEqual(element, elementOfBiggerArr))
+function MyDifference(arrA, ...arrB) {  
+    const set = new Set([].concat(...arrB));
+    const resultArray = arrA.filter(element => 
+        !set.has(element)
     );
 
     return resultArray;

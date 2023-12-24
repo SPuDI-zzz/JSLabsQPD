@@ -1,18 +1,11 @@
-function MyIsEqual(value, other) {
-    if (value === other)
-        return true;
-    
-    if (!isObject(value) && !isObject(other))
-        return value !== value && other !== other;
-
+function MyIsEqual(value, other) {  
     return isDeepEqual(value, other);
 }
 
-function isObject(value) {
-    return value != null && typeof value === 'object';
-}
-
 function isDeepEqual(value, other) {
+    if (value === other)
+        return true;
+    
     const valueType = getType(value);
     const otherType = getType(other);
 
@@ -20,14 +13,18 @@ function isDeepEqual(value, other) {
         return false;
 
     switch (valueType) {
-        case 'Boolean':
         case 'Number':
+            return +value === +other || (isNaN(value) && isNaN(other));
+        case 'Boolean':
         case 'Date':
             return +value === +other;
         case 'String':
         case 'RegExp':
             return value.toString() === other.toString();
         case 'Function':
+        case 'Symbol':
+        case 'Undefined':
+        case 'Null':
             return false;
         case 'Set':
         case 'Map':

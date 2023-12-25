@@ -1,41 +1,40 @@
-
 function Calculator(value) {
-    if (!new.target) 
+    if (!(this instanceof Calculator)) 
         throw new Error('Калькулятор вызван без ключевого слова \'new\'!');
     
     const values = [];
     values.push(value);
     
-    function getLastValue() {
+    Calculator.prototype._getLastValue = function() {
         return values[values.length - 1];
     }
 
-    function setLastValue(value) {
+    Calculator.prototype._setLastValue = function(value) {
         values[values.length - 1] = value;
     }
 
-    this.multiply = function(value) {
-        setLastValue(getLastValue() * value)
+    Calculator.prototype.multiply = function(value) {
+        this._setLastValue(this._getLastValue() * value)
         return this;
     }
 
-    this.divide = function(value) {
-        const roundedResult = +(getLastValue() / value).toFixed(2);
-        setLastValue(roundedResult);
+    Calculator.prototype.divide = function(value) {
+        const roundedResult = +(this._getLastValue() / value).toFixed(2);
+        this._setLastValue(roundedResult);
         return this;
     }
 
-    this.plus = function(value) {
+    Calculator.prototype.plus = function(value) {
         values.push(value);
         return this;
     }
 
-    this.minus = function(value) {
+    Calculator.prototype.minus = function(value) {
         values.push(-value);
         return this;
     }
 
-    this.calculate = function() {
+    Calculator.prototype.calculate = function() {
         const result = values.reduce((res, cur) => res + cur, 0);
         return result;
     }
